@@ -7,6 +7,7 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>VoiceHealth — Patient App</title>
+  <script type="module" src="./firebase.js"></script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
@@ -960,6 +961,31 @@ function renderHistory() {
     // still show splash first — user taps Get Started and goes straight to home
   }
 })();
-</script>
+import { db } from './firebase.js';
+import { addDoc, collection, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+window.savePatient = async function() {
+  // Auto get next number starting from 900
+  const q = query(collection(db, "patients"), orderBy("patientNumber", "desc"), limit(1));
+  const querySnapshot = await getDocs(q);
+  let nextNumber = 900;
+  if(!querySnapshot.empty){
+    nextNumber = querySnapshot.docs[0].data().patientNumber + 1;
+  }
+  // Save to Firebase
+  await addDoc(collection(db, "patients"), {
+    patientID: "eJWI-" + nextNumber,
+    patientNumber: nextNumber,
+    name: document.getElementById("patientName").value,
+    phone: document.getElementById("patientPhone").value,
+    feedback: document.getElementById("feedback").value,
+    createdAt: new Date()
+  });
+  alert("Saved! Patient ID: eJWI-" + nextNumber + " ✅");
+  
+  // Clear form
+  document.getElementById("patientName").value = "";
+  document.getElementById("patientPhone").value = "";
+  document.getElementById("feedback").value = "";
+}
 </body>
 </html>
