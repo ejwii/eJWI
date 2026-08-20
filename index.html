@@ -7,7 +7,23 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>VoiceHealth — Patient App</title>
-  <script type="module" src="./firebase.js"></script>
+  <script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBMxV9JC5ODp8LS4P6vFG5NGGHlTbkAnwA",
+  authDomain: "ejwi-f2f1a.firebaseapp.com",
+  projectId: "ejwi-f2f1a",
+  storageBucket: "ejwi-f2f1a.firebasestorage.app",
+  messagingSenderId: "13121909733",
+  appId: "1:13121909733:web:9ddb97fa615a611cf5f50c",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+window.db = db;
+</script>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap');
 
